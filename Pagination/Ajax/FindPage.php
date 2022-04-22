@@ -50,10 +50,7 @@ if( !empty($_POST["page"]) )
 			*/			
 			$getdata_PRST = $CONNPDO->prepare("SELECT id,word FROM vocabulary ORDER BY id LIMIT :from , :to ");
 			/*
-			The third param in bindValue is optional in all cases. We do not have to declare the datatype in every bindValue or bindParam
-			It can be used for extra insurance though
-			In our case below, we want to 100% ensure that the params are ints. Assuring that the number value is int, the
-			third paramcan be skipped
+			In case we want to bind params that we will be used in pagination (skip and offset), it is important to declare as third param the inserted data type
 			*/
 			$getdata_PRST->bindValue(":from", $from, PDO::PARAM_INT);
 			$getdata_PRST->bindValue(":to",$to ,PDO::PARAM_INT);
