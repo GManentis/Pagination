@@ -35,9 +35,19 @@ if( !empty($_POST["page"]) )
 			
 			(int)$to = $pValues ; 
 		  
-		   
+		   	/*Rules that apply on pagiantion in general
+			- If we want results to be sorted by a column/field, we must ensure that the value of the field is unique else duplicated 
+			entries may occur in our pagination.
+			- If we want to paginate entries sorted by column without unique values, we must include also a column/field with unique value.
+			For example: if we want results to be ordered by a field named priority in Ascended order and that field contains not unique values 
+			in each column, then a second unique column is mandatory for the duplicate bug not to occur.The query in our example should be like
+			this:
 			
-						
+			"SELECT id,word FROM vocabulary ORDER BY priority, id LIMIT :from, :to"
+			
+			- (Cuurent example case)In case we want pagination unordered, we do not have to use ORDER BY although using we still can sort by a unique column.
+			In short in line 51, since we do not care about the sorting, the ORDER BY can be considered optional
+			*/			
 			$getdata_PRST = $CONNPDO->prepare("SELECT id,word FROM vocabulary ORDER BY id LIMIT :from , :to ");
 			$getdata_PRST->bindValue(":from", $from, PDO::PARAM_INT);
 			$getdata_PRST->bindValue(":to",$to ,PDO::PARAM_INT);
