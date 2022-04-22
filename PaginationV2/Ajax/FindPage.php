@@ -51,6 +51,12 @@ if( !empty($_POST["page"]) && !empty($_POST["items"]) )
 			In short in line 51, since we do not care about the sorting, the ORDER BY can be considered optional
 			*/							
 			$getdata_PRST = $CONNPDO->prepare("SELECT id,word FROM vocabulary ORDER BY id LIMIT :from , :to ");
+			/*
+			The third param in bindValue is optional in all cases. We do not have to declare the datatype in every bindValue or bindParam
+			It can be used for extra insurance though
+			In our case below, we want to 100% ensure that the params are ints. Assuring that the number value is int, the
+			third paramcan be skipped
+			*/
 			$getdata_PRST->bindValue(":from", $from, PDO::PARAM_INT);
 			$getdata_PRST->bindValue(":to",$to ,PDO::PARAM_INT);
 			$getdata_PRST->execute() or die($CONNPDO->errorInfo());
